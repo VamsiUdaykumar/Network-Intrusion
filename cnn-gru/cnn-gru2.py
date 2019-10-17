@@ -20,7 +20,7 @@ from keras.utils import np_utils
 import numpy as np
 import h5py
 from keras import callbacks
-from keras.layers import LSTM, GRU, SimpleRNN
+from keras.layers import GRU, GRU, SimpleRNN
 from keras.callbacks import CSVLogger
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, CSVLogger
 from sklearn.metrics import (precision_score, recall_score,f1_score, accuracy_score,mean_squared_error,mean_absolute_error)
@@ -59,13 +59,13 @@ y_test = np.array(C)
 X_train = np.reshape(trainX, (trainX.shape[0],trainX.shape[1],1))
 X_test = np.reshape(testT, (testT.shape[0],testT.shape[1],1))
 
-lstm_output_size = 70
+gru_output_size = 70
 
 cnn = Sequential()
 cnn.add(Convolution1D(64, 3, border_mode="same",activation="relu",input_shape=(43, 1)))
 cnn.add(Convolution1D(64, 3, border_mode="same", activation="relu"))
 cnn.add(MaxPooling1D(pool_length=(2)))
-cnn.add(LSTM(lstm_output_size))
+cnn.add(GRU(gru_output_size))
 cnn.add(Dropout(0.1))
 cnn.add(Dense(1, activation="sigmoid"))
 
@@ -74,7 +74,7 @@ cnn.add(Dense(1, activation="sigmoid"))
 cnn.compile(loss="binary_crossentropy", optimizer="adam",metrics=['accuracy'])
 
 # train
-checkpointer = callbacks.ModelCheckpoint(filepath="results/cnn2results/checkpoint-{epoch:02d}.hdf5", verbose=1, save_best_only=True, monitor='val_acc',mode='max')
-csv_logger = CSVLogger('results/cnn2results/cnntrainanalysis2.csv',separator=',', append=False)
+checkpointer = callbacks.ModelCheckpoint(filepath="results/cnn-gru2results/checkpoint-{epoch:02d}.hdf5", verbose=1, save_best_only=True, monitor='val_acc',mode='max')
+csv_logger = CSVLogger('results/cnn-gru2results/cnntrainanalysis2.csv',separator=',', append=False)
 cnn.fit(X_train, y_train, nb_epoch=25, show_accuracy=True,validation_data=(X_test, y_test),callbacks=[checkpointer,csv_logger])
-cnn.save("results/cnn2results/cnn_model.hdf5")
+cnn.save("results/cnn-gru2results/cnn_model.hdf5")

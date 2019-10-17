@@ -76,14 +76,14 @@ cnn.add(Dense(1, activation="sigmoid"))
 cnn.compile(loss="binary_crossentropy", optimizer="adam",metrics=['accuracy'])
 
 # train
-checkpointer = callbacks.ModelCheckpoint(filepath="results/cnn1results/checkpoint-{epoch:02d}.hdf5", verbose=1, save_best_only=True, monitor='val_acc',mode='max')
-csv_logger = CSVLogger('results/cnn1results/cnntrainanalysis1.csv',separator=',', append=False)
+checkpointer = callbacks.ModelCheckpoint(filepath="results/cnn-lstm1results/checkpoint-{epoch:02d}.hdf5", verbose=1, save_best_only=True, monitor='val_acc',mode='max')
+csv_logger = CSVLogger('results/cnn-lstm1results/cnntrainanalysis1.csv',separator=',', append=False)
 cnn.fit(X_train, y_train, nb_epoch=1000, show_accuracy=True,validation_data=(X_test, y_test),callbacks=[checkpointer,csv_logger])
-cnn.save("results/cnn1results/cnn_model.hdf5")
+cnn.save("results/cnn-lstm1results/cnn_model.hdf5")
 '''
 
 
-list_of_files = glob.glob('C:/Users/roysi/Documents/programs/network-security-new/results/cnn1results/*.hdf5')
+list_of_files = glob.glob('C:/Users/roysi/Documents/programs/network-security-new/results/cnn-lstm1results/*.hdf5')
 latest_file = max(list_of_files, key=os.path.getctime)
 cnn.load_weights(latest_file)
 

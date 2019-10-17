@@ -20,7 +20,7 @@ from keras.utils import np_utils
 import numpy as np
 import h5py
 from keras import callbacks
-from keras.layers import LSTM, GRU, SimpleRNN
+from keras.layers import GRU, GRU, SimpleRNN
 from keras.callbacks import CSVLogger
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, CSVLogger
 from sklearn.metrics import (precision_score, recall_score,f1_score, accuracy_score,mean_squared_error,mean_absolute_error)
@@ -73,14 +73,14 @@ cnn.add(Dense(1, activation="sigmoid"))
 cnn.compile(loss="binary_crossentropy", optimizer="adam",metrics=['accuracy'])
 
 # train
-checkpointer = callbacks.ModelCheckpoint(filepath="results/cnn1results/checkpoint-{epoch:02d}.hdf5", verbose=1, save_best_only=True, monitor='val_acc',mode='max')
-csv_logger = CSVLogger('results/cnn1results/cnntrainanalysis1.csv',separator=',', append=False)
+checkpointer = callbacks.ModelCheckpoint(filepath="results/cnn-gru1results/checkpoint-{epoch:02d}.hdf5", verbose=1, save_best_only=True, monitor='val_acc',mode='max')
+csv_logger = CSVLogger('results/cnn-gru1results/cnntrainanalysis1.csv',separator=',', append=False)
 cnn.fit(X_train, y_train, nb_epoch=25, show_accuracy=True,validation_data=(X_test, y_test),callbacks=[checkpointer,csv_logger])
-cnn.save("results/cnn1results/cnn_model.hdf5")
+cnn.save("results/cnn-gru1results/cnn_model.hdf5")
 
 '''
 
-cnn.load_weights("results/cnn1results/checkpoint-947.hdf5")
+cnn.load_weights("results/cnn-gru1results/checkpoint-947.hdf5")
 
 
 cnn.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])

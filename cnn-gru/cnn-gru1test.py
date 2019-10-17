@@ -20,7 +20,7 @@ from keras.utils import np_utils
 import numpy as np
 import h5py
 from keras import callbacks
-from keras.layers import LSTM, GRU, SimpleRNN
+from keras.layers import GRU, GRU, SimpleRNN
 from keras.callbacks import CSVLogger
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, CSVLogger
 from sklearn.metrics import (precision_score, recall_score,f1_score, accuracy_score,mean_squared_error,mean_absolute_error)
@@ -62,12 +62,12 @@ X_train = np.reshape(trainX, (trainX.shape[0],trainX.shape[1],1))
 X_test = np.reshape(testT, (testT.shape[0],testT.shape[1],1))
 
 
-lstm_output_size = 70
+gru_output_size = 70
 
 cnn = Sequential()
 cnn.add(Convolution1D(64, 3, border_mode="same",activation="relu",input_shape=(43, 1)))
 cnn.add(MaxPooling1D(pool_length=(2)))
-cnn.add(LSTM(lstm_output_size))
+cnn.add(GRU(gru_output_size))
 cnn.add(Dropout(0.1))
 cnn.add(Dense(1, activation="sigmoid"))
 
@@ -76,14 +76,14 @@ cnn.add(Dense(1, activation="sigmoid"))
 cnn.compile(loss="binary_crossentropy", optimizer="adam",metrics=['accuracy'])
 
 # train
-checkpointer = callbacks.ModelCheckpoint(filepath="results/cnn1results/checkpoint-{epoch:02d}.hdf5", verbose=1, save_best_only=True, monitor='val_acc',mode='max')
-csv_logger = CSVLogger('results/cnn1results/cnntrainanalysis1.csv',separator=',', append=False)
+checkpointer = callbacks.ModelCheckpoint(filepath="results/cnn-gru1results/checkpoint-{epoch:02d}.hdf5", verbose=1, save_best_only=True, monitor='val_acc',mode='max')
+csv_logger = CSVLogger('results/cnn-gru1results/cnntrainanalysis1.csv',separator=',', append=False)
 cnn.fit(X_train, y_train, nb_epoch=1000, show_accuracy=True,validation_data=(X_test, y_test),callbacks=[checkpointer,csv_logger])
-cnn.save("results/cnn1results/cnn_model.hdf5")
+cnn.save("results/cnn-gru1results/cnn_model.hdf5")
 '''
 
 
-list_of_files = glob.glob('C:/Users/roysi/Documents/programs/network-security-new/results/cnn1results/*.hdf5')
+list_of_files = glob.glob('C:/Users/roysi/Documents/programs/network-security-new/results/cnn-gru1results/*.hdf5')
 latest_file = max(list_of_files, key=os.path.getctime)
 cnn.load_weights(latest_file)
 
@@ -97,8 +97,8 @@ accuracy = accuracy_score(y_test, y_pred)
 recall = recall_score(y_test, y_pred , average="binary")
 precision = precision_score(y_test, y_pred , average="binary")
 f1 = f1_score(y_test, y_pred, average="binary")
-np.savetxt('res/expected-cnn-lstm-1.txt', y_test, fmt='%01d')
-np.savetxt('res/predicted-cnn-lstm-1.txt', y_pred, fmt='%01d')
+np.savetxt('res/expected-cnn-gru-1.txt', y_test, fmt='%01d')
+np.savetxt('res/predicted-cnn-gru-1.txt', y_pred, fmt='%01d')
 
 print("confusion matrix")
 print("----------------------------------------------")
