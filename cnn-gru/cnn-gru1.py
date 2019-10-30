@@ -75,37 +75,5 @@ cnn.compile(loss="binary_crossentropy", optimizer="adam",metrics=['accuracy'])
 # train
 checkpointer = callbacks.ModelCheckpoint(filepath="results/cnn-gru1results/checkpoint-{epoch:02d}.hdf5", verbose=1, save_best_only=True, monitor='val_acc',mode='max')
 csv_logger = CSVLogger('results/cnn-gru1results/cnntrainanalysis1.csv',separator=',', append=False)
-cnn.fit(X_train, y_train, nb_epoch=25, show_accuracy=True,validation_data=(X_test, y_test),callbacks=[checkpointer,csv_logger])
+cnn.fit(X_train, y_train, nb_epoch=25,validation_data=(X_test, y_test),callbacks=[checkpointer,csv_logger])
 cnn.save("results/cnn-gru1results/cnn_model.hdf5")
-
-'''
-
-cnn.load_weights("results/cnn-gru1results/checkpoint-947.hdf5")
-
-
-cnn.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
-loss, accuracy = cnn.evaluate(X_test, y_test)
-print("\nLoss: %.2f, Accuracy: %.2f%%" % (loss, accuracy*100))
-
-
-y_pred = cnn.predict_classes(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-recall = recall_score(y_test, y_pred , average="binary")
-precision = precision_score(y_test, y_pred , average="binary")
-f1 = f1_score(y_test, y_pred, average="binary")
-np.savetxt('res/expected1.txt', y_test, fmt='%01d')
-np.savetxt('res/predicted1.txt', y_pred, fmt='%01d')
-
-print("confusion matrix")
-print("----------------------------------------------")
-print("accuracy")
-print("%.6f" %accuracy)
-print("racall")
-print("%.6f" %recall)
-print("precision")
-print("%.6f" %precision)
-print("f1score")
-print("%.6f" %f1)
-cm = metrics.confusion_matrix(y_test, y_pred)
-print("==============================================")
-'''
