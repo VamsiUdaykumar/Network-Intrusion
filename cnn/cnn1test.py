@@ -82,7 +82,7 @@ cnn.fit(X_train, y_train, nb_epoch=1000, show_accuracy=True,validation_data=(X_t
 cnn.save("results/cnn1/cnn_model.hdf5")
 '''
 
-list_of_files = glob.glob('C:/Users/roysi/Documents/programs/network-security-new/results/cnn1/*.hdf5')
+list_of_files = glob.glob('C:/Users/Vamsi/Desktop/IEEE/results/cnn1/*.hdf5')
 latest_file = max(list_of_files, key=os.path.getctime)
 cnn.load_weights(latest_file)
 
