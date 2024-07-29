@@ -28,5 +28,3 @@ rnn
 rnn1
 rnn2
 rnn3
-
-roy sup?
